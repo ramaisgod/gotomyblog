@@ -1,0 +1,40 @@
+{% extends 'books/index.html' %}
+
+{% block content %}
+
+<div class="card">
+    <div class="card-header">
+        Download Data
+    </div>
+    <div class="card-body">
+        <div class="card-text">
+            <form method="post" autocomplete="off">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <label for="start">Start Date</label>
+                        <input type="text" data-date-format="yyyy-mm-dd" class="form-control datepicker" name="start_date" id="start_date" placeholder="YYYY-MM-DD">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="end">End Date</label>
+                        <input type="text" data-date-format="yyyy-mm-dd" class="form-control datepicker" name="end_date" id="end_date" placeholder="YYYY-MM-DD">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Download</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+
+$(function () {
+$(".datepicker").datepicker({"dateFormat": "yy-mm-dd",
+    autoclose: true,
+    todayHighlight: true
+}).datepicker('update', new Date());
+});
+</script>
+
+{% endblock %}

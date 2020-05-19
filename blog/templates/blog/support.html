@@ -1,0 +1,65 @@
+{% extends 'blog/index.html' %}
+{% load static %}
+{% block content %}
+
+<div class="alert alert-primary my-2">
+    <h3 class="display-5 alert alert-primary">Help & Support</h3>
+    <hr>
+
+<div class="card mb-3 shadow-lg" style="max-width: 640px;">
+  <div class="row no-gutters">
+    <div class="col-md-4">
+      <img src="{% static 'image/avtar2.jpg' %}" class="card-img" alt="...">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h2 class="card-title">Design & Developed by - </h2>
+        <p class="card-text text-info h3">Ram Krishna Prasad</p>
+          <span><b><i class="fas fa-envelope text-info fa-lg" aria-hidden="true"></i> ramaisgod@gmail.com</b></span><br>
+          <span><b>
+              <a href="https://github.com/ramaisgod" target="_blank">
+              <i class="fab fa-github text-info fa-lg" aria-hidden="true"></i> https://github.com/ramaisgod</b></span>
+              </a>
+        <p class="card-text"><small class="text-muted"></small></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card mb-3 shadow-lg" style="max-width: 640px;">
+  <div class="row no-gutters">
+    <div class="col-md-4">
+      <img src="{% static 'image/avtar2.jpg' %}" class="card-img" alt="...">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h2 class="card-title">Help & Support by - </h2>
+        <p class="card-text text-info h3">Abhishek Saraswat</p>
+          <span><b><i class="fas fa-envelope text-info fa-lg" aria-hidden="true"></i> mygodisram@gmail.com</b></span><br>
+        <p class="card-text"><small class="text-muted"></small></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card mb-3 shadow-lg" style="max-width: 640px;">
+  <div class="row no-gutters">
+    <div class="col-md-4">
+      <img src="{% static 'image/avtar2.jpg' %}" class="card-img" alt="...">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h2 class="card-title">Technology Used - </h2>
+        <p class="card-text text-info h4">Python==3.7.2</p>
+        <p class="card-text text-info h4">Django==3.0.6</p>
+        <p class="card-text text-info h4">Sqlite3</p>
+        <p class="card-text text-info h4">Bootstrap v4.4</p>
+        <p class="card-text text-info h4">Font Awesome</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+{% endblock %}

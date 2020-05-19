@@ -1,0 +1,120 @@
+{% extends 'blog/index.html' %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+
+<div class="alert alert-primary my-2">
+    <h2 class="display-6 card-header">{{post.title}}</h2>
+    <p class="card-text card-header">{{post.timestamp|naturaltime}} | Author: {{post.author}}</p>
+    <div class="col-md-12">
+        <div class="card mb-3 p-0 alert alert-primary" style="max-width: 100%;">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card-body p-0">
+                        <p class="card-text">{{post.content|safe}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- New Comments section -->
+    {% if request.user.is_authenticated %}
+    <div class="container">
+        <h5>Post Comments</h5>
+        <form method="post" action="">
+            {% csrf_token %}
+            <input type="hidden" name="postID" id="postID" value="{{post.post_id}}">
+            <input type="hidden" name="parentID" value="">
+            <pre><textarea class="form-control mb-1" rows="3" placeholder="Write your comments here" name="postComment"
+                         id="postComment" required></textarea></pre>
+            <button type="submit" name="btn_comment" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    {% else %}
+    <h5>Login to post a comment</h5>
+    {% endif %}
+    <!-- End New Comments section -->
+
+    <!-- Old Comments section -->
+    <hr>
+    <div class="container">
+        <h5>Comments ( {{ comments.count }} )</h5>
+        {% for comment in comments %}
+        <div class="row my-3">
+            <div class="col-md-1">
+                <div class="media text-muted">
+                    <img src="/static/image/user1.png" height="60px" width="62px" class="rounded float-left">
+                </div>
+            </div>
+            <div class="col-md-11">
+                <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                    <strong class="text-info">{{comment.user}}</strong>
+                    <span class="text-info" style="font-size:12px">{{comment.timestamp|naturaltime}}</span>
+                </p>
+                <div>
+                    <pre class="d-block text-info">{{comment.comment}}</pre>
+                </div>
+
+                <!-- Reply Section -->
+                <div class="reply">
+                <!-- New Reply Section -->
+                {% if request.user.is_authenticated %}
+                <p>
+                    <a class="btn btn-primary btn-sm" data-toggle="collapse" href="#reply_{{comment.comment_id}}"
+                       role="button" aria-expanded="false" aria-controls="reply_{{comment.comment_id}}">
+                        Reply
+                    </a>
+                </p>
+                <div class="collapse" id="reply_{{comment.comment_id}}">
+                    <div class="card card-body p-1 alert alert-primary">
+                        <form method="post" action="">
+                            {% csrf_token %}
+                            <input type="hidden" name="parentID" value="{{comment.comment_id}}">
+                            <input type="hidden" name="postID" value="{{comment.post.post_id}}">
+                            <textarea class="form-control mb-1" placeholder="Write your reply here"
+                                         name="postComment" required></textarea>
+                            <button type="submit" name="btn_reply" class="btn btn-primary btn-sm">Submit</button>
+                        </form>
+                    </div>
+                </div>
+                {% else %}
+                {% endif %}
+                <!-- End New Reply -->
+
+                <!-- Old Replies -->
+    <div class="container">
+        {% for item in replies %}
+        {% if item.post_id == comment.post.post_id and item.parent.comment_id == comment.comment_id %}
+        <div class="row">
+            <div class="col-md-1 p-0">
+                <div class="media text-muted p-0">
+                    <img src="/static/image/user1.png" height="40px" width="42px" class="rounded float-left pr-0">
+                </div>
+            </div>
+            <div class="col-md-11 p-0">
+                <p class="media-body pb-1 mb-0 small lh-125 border-bottom border-gray">
+                    <strong class="text-info">{{item.user}}</strong>
+                    <span class="text-info" style="font-size:12px">{{item.timestamp|naturaltime}}</span>
+                </p>
+                <div>
+                    <pre class="d-block text-info">{{ item.comment }}</pre>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+
+                <!-- End Old Replies -->
+
+                </div>
+                <!-- End Reply Section -->
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <!--End Old Comments section -->
+</div>
+
+
+{% endblock %}

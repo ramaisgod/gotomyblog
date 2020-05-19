@@ -1,0 +1,124 @@
+{% extends 'blog/index.html' %}
+{% block content %}
+
+
+<div class="alert alert-primary my-2">
+    <h3>Edit Post</h3>
+    <hr>
+<form method="post" action="{% url 'edit_saved_post' obj_Blog.post_id %}">
+    {% csrf_token %}
+    <div class="form-group row my-3">
+        <div class="col-md-8 mb-2">
+            <label for="inputTitle"><b>Title</b></label>
+            {{form.title}}
+        </div>
+        <div class="col-md-4 mb-2">
+            <label for="inputAuthor"><b>Author</b></label>
+            {{form.author}}
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-12 mb-2">
+            <div class="custom-control custom-switch">
+              {{form.private}}
+              <label class="custom-control-label" for="id_private">This is my Private Post</label>
+            <small class="text-muted">(Private Post will not visible to public)</small>
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-12 mb-2">
+            <label for="inputContent"><b>Write Post Content Below</b></label>
+           <textarea name="content" id="id_content" class="form-control" rows="10">{{form.content.value}}</textarea>
+        </div>
+    </div>
+
+    <button type="submit" name="publish" class="btn btn-success active">Publish</button>
+    <button type="submit" name="save_as_draft" class="btn btn-warning active">Save As Draft</button>
+</form>
+</div>
+
+{% block js %}
+<script>
+document.getElementById("id_title").className="form-control";
+document.getElementById("id_author").className="form-control";
+document.getElementById("id_private").className="custom-control-input";
+
+</script>
+{% endblock js %}
+
+
+
+<script>
+var script = document.createElement('script');
+script.type = 'text/javascript';
+script.src = "/static/js/tinymce.min.js";
+document.head.appendChild(script);
+
+script.onload = function(){
+
+tinymce.init({
+selector: '#id_content',
+  plugins: 'print preview paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons',
+  imagetools_cors_hosts: ['picsum.photos'],
+  menubar: 'file edit view insert format tools table help',
+  toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl',
+  toolbar_sticky: true,
+  autosave_ask_before_unload: true,
+  autosave_interval: "30s",
+  autosave_prefix: "{path}{query}-{id}-",
+  autosave_restore_when_empty: false,
+  autosave_retention: "2m",
+  image_advtab: true,
+  content_css: '//www.tiny.cloud/css/codepen.min.css',
+  link_list: [
+    { title: 'My page 1', value: 'http://www.tinymce.com' },
+    { title: 'My page 2', value: 'http://www.moxiecode.com' }
+  ],
+  image_list: [
+    { title: 'My page 1', value: 'http://www.tinymce.com' },
+    { title: 'My page 2', value: 'http://www.moxiecode.com' }
+  ],
+  image_class_list: [
+    { title: 'None', value: '' },
+    { title: 'Some class', value: 'class-name' }
+  ],
+  importcss_append: true,
+  height: 400,
+  file_picker_callback: function (callback, value, meta) {
+    /* Provide file and text for the link dialog */
+    if (meta.filetype === 'file') {
+      callback('https://www.google.com/logos/google.jpg', { text: 'My text' });
+    }
+
+    /* Provide image and alt text for the image dialog */
+    if (meta.filetype === 'image') {
+      callback('https://www.google.com/logos/google.jpg', { alt: 'My alt text' });
+    }
+
+    /* Provide alternative source and posted for the media dialog */
+    if (meta.filetype === 'media') {
+      callback('movie.mp4', { source2: 'alt.ogg', poster: 'https://www.google.com/logos/google.jpg' });
+    }
+  },
+  templates: [
+        { title: 'New Table', description: 'creates a new table', content: '<div class="mceTmpl"><table width="98%%"  border="0" cellspacing="0" cellpadding="0"><tr><th scope="col"> </th><th scope="col"> </th></tr><tr><td> </td><td> </td></tr></table></div>' },
+    { title: 'Starting my story', description: 'A cure for writers block', content: 'Once upon a time...' },
+    { title: 'New list with dates', description: 'New List with dates', content: '<div class="mceTmpl"><span class="cdate">cdate</span><br /><span class="mdate">mdate</span><h2>My List</h2><ul><li></li><li></li></ul></div>' }
+  ],
+  template_cdate_format: '[Date Created (CDATE): %m/%d/%Y : %H:%M:%S]',
+  template_mdate_format: '[Date Modified (MDATE): %m/%d/%Y : %H:%M:%S]',
+  height: 600,
+  image_caption: true,
+  quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
+  noneditable_noneditable_class: "mceNonEditable",
+  toolbar_mode: 'sliding',
+  contextmenu: "link image imagetools table",
+
+});
+}
+
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends 'blog/index.html' %}
+{% load static %}
+{% block content %}
+
+<div class="alert alert-primary my-2">
+    <h3 class="display-5 alert alert-primary">ALL POST ( {{obj_Blog.count}} )</h3>
+    <hr>
+    <div class="table-responsive-sm">
+    <table class="table table-sm table-bordered table-hover">
+        <tr class="table-primary">
+            <th>Post Title</th>
+            <th>Post Type</th>
+            <th>Author Name</th>
+            <th>Timestamp</th>
+        </tr>
+
+    {% for blog in obj_Blog %}
+            <tr>
+            <td>
+            <h6>
+                <a href="{% url 'delete_saved_post' blog.post_id %}" data-toggle="modal" data-target="#deletePostModal_{{blog.post_id}}">
+                    <i class="fas fa-trash text-danger" aria-hidden="true"></i>
+                </a>
+
+<!-- Modal for Delete Post -->
+<div class="modal fade" id="deletePostModal_{{blog.post_id}}" tabindex="-1" role="dialog" aria-labelledby="deletePostModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-danger" id="deletePostModalLabel">Confirm Delete Post</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       <div class="text-info mb-3">
+           Post Title : <b>{{blog.title|truncatechars:30}}</b><br>
+           </div>
+          <div class="text-danger">
+          Do you want to delete post ?
+              </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <form method="post" action="{% url 'delete_saved_post' blog.post_id %}">
+              {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Yes Delete Post</button>
+              </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!--End Modal for Delete Post -->
+                <a href="/blog/{{blog.blog_username}}/{{blog.slug}}/">
+                    <i class="fas fa-eye text-success" aria-hidden="true"></i>
+                    {{blog.title|truncatechars:30}}
+                </a>
+            </h6>
+            </td>
+            <td>
+                {% if blog.private %}
+                <i class="fa fa-lock text-success" aria-hidden="true"></i> Private
+                {% else %}
+                <i class="fa fa-users text-info" aria-hidden="true"></i> Public
+                {% endif %}
+            </td>
+            <td>{{blog.author}}</td>
+            <td>{{blog.timestamp}}</td>
+            </tr>
+    {% endfor %}
+
+    </table>
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+
+{% block js %}
+
+{% endblock js %}
